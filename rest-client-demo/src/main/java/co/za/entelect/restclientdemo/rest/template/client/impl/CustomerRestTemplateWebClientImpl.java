@@ -27,7 +27,7 @@ public class CustomerRestTemplateWebClientImpl implements CustomerRestTemplateWe
        HttpHeaders httpHeaders = new HttpHeaders();
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<List<CustomerDto>> response = restTemplate.exchange(baseUrl+"/all", HttpMethod.GET,httpEntity,
+        ResponseEntity<List<CustomerDto>> response = restTemplate.exchange(baseUrl, HttpMethod.GET,httpEntity,
                 new ParameterizedTypeReference<List<CustomerDto>>() {});
         return response.getBody();
     }

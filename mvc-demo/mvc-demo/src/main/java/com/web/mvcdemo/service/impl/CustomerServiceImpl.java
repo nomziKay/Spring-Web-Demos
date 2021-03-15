@@ -30,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getById(final Long id) {
         Optional<Customer> result = customerRepository.findById(id);
-        if (null != result) {
+        if (result.isPresent()) {
             return result.get();
         } else {
             throw new RuntimeException("Customer with id: " + id + " not found");
@@ -40,5 +40,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void delete(final Customer customer) {
         customerRepository.delete(customer);
+    }
+
+    @Override
+    public Customer getByName(String customerName) {
+        return customerRepository.findByFirstName(customerName);
+
     }
 }

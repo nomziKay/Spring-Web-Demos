@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,18 +31,26 @@ public class CustomerController {
 
     @PostMapping("/save")
     public ResponseEntity<CustomerDto> saveCustomer(@RequestBody CustomerDto customerDto){
+        //consider converting in the service layer and keep the db objects there
         Customer customer = modelMapper.map(customerDto,Customer.class);
         CustomerDto persistedCustomer = modelMapper.map(customerService.save(customer),CustomerDto.class);
 
         return new ResponseEntity<>(persistedCustomer, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<CustomerDto>> getAllCustomers(){
-        List<CustomerDto> customerDtoList = customerService.getAll().stream()
+        List<CustomerDto> customerDtoList = customerService.findAll().stream()
                 .map(customer -> modelMapper.map(customer,CustomerDto.class)).collect(Collectors.toList());
 
         return new ResponseEntity<>(customerDtoList,HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDto>  getById(@PathVariable Long id){
+        Customer customer = customerService.findById(id);
+        CustomerDto customerDto = modelMapper.map(customer,CustomerDto.class);
+
+        return new ResponseEntity<>(customerDto,HttpStatus.OK);
+    }
 }

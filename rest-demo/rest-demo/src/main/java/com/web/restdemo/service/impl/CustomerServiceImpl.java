@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+
     private CustomerRepository customerRepository;
 
     public CustomerServiceImpl(final CustomerRepository customerRepository) {
@@ -23,14 +24,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> getAll() {
+    public List<Customer> findAll() {
         return customerRepository.findAll();
     }
 
     @Override
-    public Customer getById(final Long id) {
+    public Customer findById(final Long id) {
         Optional<Customer> result = customerRepository.findById(id);
-        if (null != result) {
+        if (result.isPresent()) {
             return result.get();
         } else {
             throw new CustomerNotFoundException(id);
